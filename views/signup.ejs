@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <link rel="stylesheet" href="/styles_signup.css">
+</head>
+<body>
+    <h1>QUIZ APP</h1>
+    <div class="container">
+        <h1>Sign up to use our service</h1>
+        <form id="form" action="/user/signup" method="post" >
+        <label for="name">Name:</label>
+        <input class="input_text" type="text" name="name" placeholder="Enter your Name">
+        <label for="email">Email:</label>
+        <input class="input_text" type="text" name="email" placeholder="Enter Your Email">
+        <label for="password">password</label>
+        <input class="input_text" type="password" name="password" placeholder="Enter Your Password">
+        <input class="input_sub" type="submit">
+    </form>
+    </div>
+    
+    <h2>A registered user? LoginIN</h2>
+    <button><a href="http://localhost:8000/login" style="text-decoration: none;">Login</a></button>
+</body>
+</html>

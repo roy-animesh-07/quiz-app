@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="/styles_login.css">
+</head>
+<body>
+    <h1>QUIZ APP</h1>
+    <div class="container">
+        <h1>Login In</h1>
+    <form action="/user/login" method="post" id="form">
+        <label for="email">Email:</label>
+        <input class="input_text" type="text" name="email" placeholder="example@gmial.com">
+        <label for="password">password</label>
+        <input class="input_text" type="password" name="password" placeholder="password">
+        <input class="input_sub" type="submit">
+    </form>
+    
+    </div>
+    <h2>Not a user? Sign UP instead</h2>
+    <button><a href="http://localhost:8000/signup" style="text-decoration: none;">SignUp</a></button>
+    
+</body>
+</html>
