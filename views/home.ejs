@@ -2,23 +2,50 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home Page</title>
-    <link rel="stylesheet" href="/styles_home.css" />
+    <title>QUIZ-APP</title>
+    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <h1>Quiz - App</h1>
-    <% if (user) { %>
-    <h1>Welcome, <%= user.name %></h1>
-     <button><a href="/user/logout">log out</a></button>
-    <% } else { %>
-    <h1>Welcome, guest</h1>
-      <div class="loginfirst">
-        <p>To use the service you have to login first:</p>
-        <button><a href="/login">Login</a></button>
-        <button><a href="/signup">signup</a></button>
+    <header>
+      <div class="left"><h1>QUIZ-APP</h1></div>
+      <div class="right">
+        <ul>
+          <li>Home</li>
+          <li>My Quizes</li>
+          <li>Leaderboard</li>
+          <li>About</li>
+          <li>Contact Us</li>
+        </ul>
+        <% if(!user) { %>
+        <button class="btn" onclick="location.href='/login'">LoginIn</button>
+        <button class="btn" onclick="location.href='/signup'">SignUp</button>
+        <% } else {%>
+        <button class="btn" onclick="location.href='/profile'">
+          <%= user.name %>
+        </button>
+        <button class="btn" onclick="location.href='/user/logout'">
+          Logout
+        </button>
+        <% }%>
       </div>
-    <% } %>
+    </header>
+    <div class="middle">
+      <div class="greet"><% if(!user) { %>
+    <h1>Wecome, Guest </h1>
+    <% } else {%>
+      <h1>Wecome, <%= user.name %> </h1>
+    <% }%>
+    </div>
+    <div class="mainbody">
+      <h3>Upcoming Quizes</h3>
+      <div class="card">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officia animi reprehenderit distinctio, minima praesentium assumenda vero laboriosam. Quia eveniet quaerat ab, doloribus qui impedit iste accusamus delectus ea iure laudantium.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore incidunt dolorem veritatis, unde doloremque sunt sit reiciendis eius magnam amet, inventore doloribus? Quam quod earum cumque consequuntur, ad quibusdam quia!
+      </div>
+     
+    </div>
+    </div>
+      
+    
   </body>
 </html>
