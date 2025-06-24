@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <div class="left"><h1>QUIZ-APP</h1></div>
+        <div class="right">
+            <ul>
+                <li onclick="location.href='/'">Home</li>
+                <li onclick="location.href='/myquizes'">My Quizes</li>
+                <li onclick="location.href='/leaderboard'">Leaderboard</li>
+                <li onclick="location.href='/about'">About</li>
+                <li onclick="location.href='/contact'">Contact Us</li>
+            </ul>
+            <% if(!user) { %>
+                <button class="btn" onclick="location.href='/login'">LoginIn</button>
+                <button class="btn" onclick="location.href='/signup'">SignUp</button>
+            <% } else {%>
+                <button class="btn" onclick="location.href='/profile'"><%= user.name %></button>
+                <button class="btn" onclick="location.href='/user/logout'">Logout</button>
+            <% }%>
+        </div>
+    </header>
+
+    <div class="middle">
+        <div class="greet">
+            <% if(!user) { %>
+                <h1>Welcome, Guest</h1>
+            <% } else {%>
+                <h1>Welcome, <%= user.name %></h1>
+            <% }%>
+        </div>
+        <div class="mainbody">
+            <h3>About Us</h3>
+            <p>We are a team of passionate developers dedicated to creating engaging and educational quiz experiences. Our goal is to make learning fun and accessible for everyone.</p>
+            <p>Our platform offers a wide range of quizzes across various subjects, allowing users to test their knowledge and learn new things in an interactive way.</p>
+            <p>We believe in the power of quizzes to enhance learning and retention, and we strive to provide a user-friendly interface that makes it easy for anyone to create, share, and take quizzes.</p>
+            <p>Whether you are a student looking to prepare for exams, a teacher wanting to create quizzes for your class, or just someone who loves to learn, our platform has something for you.</p>
+            <p>Thank you for choosing our quiz app. We hope you enjoy using it as much as we enjoyed building it!</p>
+            <p>Feel free to explore our platform, take quizzes, and challenge yourself!</p>
+
+        </div>
+</body>
+</html>

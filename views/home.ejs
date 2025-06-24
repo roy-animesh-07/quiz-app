@@ -11,11 +11,11 @@
       <div class="left"><h1>QUIZ-APP</h1></div>
       <div class="right">
         <ul>
-          <li>Home</li>
-          <li>My Quizes</li>
-          <li>Leaderboard</li>
-          <li>About</li>
-          <li>Contact Us</li>
+          <li onclick="location.href='/'">Home</li>
+          <li onclick="location.href='/myquizes'">My Quizes</li>
+          <li onclick="location.href='/leaderboard'">Leaderboard</li>
+          <li onclick="location.href='/about'">About</li>
+          <li onclick="location.href='/contact'">Contact Us</li>
         </ul>
         <% if(!user) { %>
         <button class="btn" onclick="location.href='/login'">LoginIn</button>

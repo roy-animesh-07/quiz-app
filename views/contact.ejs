@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <div class="left"><h1>QUIZ-APP</h1></div>
+        <div class="right">
+            <ul>
+                <li onclick="location.href='/'">Home</li>
+                <li onclick="location.href='/myquizes'">My Quizes</li>
+                <li onclick="location.href='/leaderboard'">Leaderboard</li>
+                <li onclick="location.href='/about'">About</li>
+                <li onclick="location.href='/contact'">Contact Us</li>
+            </ul>
+            <% if(!user) { %>
+                <button class="btn" onclick="location.href='/login'">LoginIn</button>
+                <button class="btn" onclick="location.href='/signup'">SignUp</button>
+            <% } else {%>
+                <button class="btn" onclick="location.href='/profile'"><%= user.name %></button>
+                <button class="btn" onclick="location.href='/user/logout'">Logout</button>
+            <% }%>
+        </div>
+    </header>
+
+    <div class="middle">
+        <div class="greet">
+            <% if(!user) { %>
+                <h1>Welcome, Guest</h1>
+            <% } else {%>
+                <h1>Welcome, <%= user.name %></h1>
+            <% }%>
+        </div>
+        <div class="mainbody">
+            <div style="display: flex; gap: 40px; align-items: flex-start;">
+                <div style="flex: 1; min-width: 0;">
+                    <h2>Contacts: </h2>
+                    <p>Email: <a href="mailto:aroy45062@gmail.com">aroy45062@gmail.com</a></p>
+                    <p>Phone: <a href="tel:+1234567890">+1 234 567 890</a></p>
+                    <p>Address: 123 Main Street, City, Country</p>
+                    <h3>Our Team:</h3>
+                    <ul class="team-list">
+                        <li>
+                            <strong>Person 1:</strong> Alice Smith<br>
+                            Email: <a href="mailto:alice@example.com">alice@example.com</a>
+                        </li>
+                        <li>
+                            <strong>Person 2:</strong> Bob Johnson<br>
+                            Email: <a href="mailto:bob@example.com">bob@example.com</a>
+                        </li>
+                        <li>
+                            <strong>Person 3:</strong> Carol Lee<br>
+                            Email: <a href="mailto:carol@example.com">carol@example.com</a>
+                        </li>
+                    </ul>
+                    <h3>Follow us:</h3>
+                    <ul class="social-links">
+                        <li><a href="https://twitter.com/" target="_blank">Twitter</a></li>
+                        <li><a href="https://facebook.com/" target="_blank">Facebook</a></li>
+                        <li><a href="https://instagram.com/" target="_blank">Instagram</a></li>
+                        <li><a href="https://linkedin.com/" target="_blank">LinkedIn</a></li>
+                    </ul>
+                </div>
+                <div style="position: sticky; top: 40px; align-self: flex-start; min-width: 420px;">
+                    <h3>Contact Form:</h3>
+                    <form action="/contact" method="POST" class="contact-form">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required class="input-field">
+
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required class="input-field">
+
+                        <label for="message">Message:</label>
+                        <textarea id="message" name="message" rows="4" required class="input-field"></textarea>
+
+                        <button type="submit" class="btn">Send</button>
+                    </form>
+                </div>
+            </div>
+            
+            <style>
+                .team-list {
+                    list-style-type: none;
+                    padding: 0;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 20px;
+                }
+                .contact-form {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+                    max-width: 400px;
+                    margin: 30px auto 0 auto;
+                    padding: 24px;
+                    background: #fff;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+                }
+                .contact-form label {
+                    font-weight: 500;
+                    margin-bottom: 4px;
+                }
+                .contact-form .input-field {
+                    padding: 10px 12px;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    font-size: 1rem;
+                    transition: border-color 0.2s;
+                }
+                .contact-form .input-field:focus {
+                    border-color: #007bff;
+                    outline: none;
+                }
+                .contact-form .btn {
+                    background: #007bff;
+                    color: #fff;
+                    border: none;
+                    border-radius: 4px;
+                    padding: 10px 0;
+                    font-size: 1rem;
+                    cursor: pointer;
+                    transition: background 0.2s;
+                }
+                .contact-form .btn:hover {
+                    background: #0056b3;
+                }
+            </style>
+
+        </div>
+</body>
+</html>
