@@ -73,6 +73,16 @@ header {
     border-radius: 1.5rem;
     padding: 2rem 7rem;
 }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid black;
+}
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid black;
+}
 .card {
     border: 2px solid black;
     width: 100%;

@@ -27,11 +27,13 @@ const {restrictToLoggedinUserOnly,checkAuth} = require("./middlewares/auth");
 //routes
 const staticRoute = require("./routes/staticRouter");
 const userRoute = require("./routes/user");
+const quizRoute = require("./routes/quiz");
 
 
 
 app.use("/user",userRoute);
 app.use("/",checkAuth,staticRoute);
+app.use("/quiz",restrictToLoggedinUserOnly,quizRoute);
 
 app.listen(PORT,() => {
     console.log(`server started at http://localhost:${PORT}`);

@@ -18,7 +18,7 @@
           <li onclick="location.href='/contact'">Contact Us</li>
         </ul>
         <% if(!user) { %>
-        <button class="btn" onclick="location.href='/login'">LoginIn</button>
+        <button class="btn" onclick="location.href='/login'">LogIn</button>
         <button class="btn" onclick="location.href='/signup'">SignUp</button>
         <% } else {%>
         <button class="btn" onclick="location.href='/profile'">
@@ -38,12 +38,48 @@
     <% }%>
     </div>
     <div class="mainbody">
+      <h3>LIVE-NOW</h3>
+      <div class="quiz-list">
+        <% if (liveQuizes.length > 0) { %>
+          <% liveQuizes.forEach((quiz) => { %>
+            <div class="card">
+              <h4><%= quiz.title %></h4>
+              <p><%= quiz.description %></p>
+              <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p>No live quizes available.</p>
+        <% } %>
       <h3>Upcoming Quizes</h3>
-      <div class="card">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officia animi reprehenderit distinctio, minima praesentium assumenda vero laboriosam. Quia eveniet quaerat ab, doloribus qui impedit iste accusamus delectus ea iure laudantium.
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore incidunt dolorem veritatis, unde doloremque sunt sit reiciendis eius magnam amet, inventore doloribus? Quam quod earum cumque consequuntur, ad quibusdam quia!
-      </div>
+      <div class="quiz-list">
+        <% if (upcomingQuizes.length > 0) { %>
+          <% upcomingQuizes.forEach((quiz) => { %>
+            <div class="card">
+              <h4><%= quiz.title %></h4>
+              <p><%= quiz.description %></p>
+              <!-- <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button> -->
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p>No upcoming quizes available.</p>
+        <% } %>
      
     </div>
+      <h3>Past Quizes</h3>
+      <div class="quiz-list">
+        <% if (pastQuizes.length > 0) { %>
+          <% pastQuizes.forEach((quiz) => { %>
+            <div class="card">
+              <h4><%= quiz.title %></h4>
+              <p><%= quiz.description %></p>
+              <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p>No past quizes available.</p>
+        <% } %>
+      </div>
     </div>
       
     

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QUIZ-APP</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="left"><h1>QUIZ-APP</h1></div>
+      <div class="right">
+        <ul>
+          <li onclick="location.href='/'">Home</li>
+          <li onclick="location.href='/myquizes'">My Quizes</li>
+          <li onclick="location.href='/leaderboard'">Leaderboard</li>
+          <li onclick="location.href='/about'">About</li>
+          <li onclick="location.href='/contact'">Contact Us</li>
+        </ul>
+        <% if(!user) { %>
+        <button class="btn" onclick="location.href='/login'">LogIn</button>
+        <button class="btn" onclick="location.href='/signup'">SignUp</button>
+        <% } else {%>
+        <button class="btn" onclick="location.href='/profile'">
+          <%= user.name %>
+        </button>
+        <button class="btn" onclick="location.href='/user/logout'">
+          Logout
+        </button>
+        <% }%>
+      </div>
+    </header>
+    <div class="middle">
+      <div class="greet"><% if(!user) { %>
+    <h1>Wecome, Guest </h1>
+    <% } else {%>
+      <h1>Wecome, <%= user.name %> </h1>
+    <% }%>
+    </div>
+    <div class="mainbody">
+        <h3>My Quizes</h3>
+        <div class="quiz-list">
+            <% if (quizes.length > 0) { %>
+            <% quizes.forEach((quiz) => { %>
+                <div class="card">
+                <h4><%= quiz.title %></h4>
+                <p><%= quiz.description %></p>
+                <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button>
+                <button onclick="location.href='/quiz/result/<%= quiz._id %>'">View Result</button>
+                </div>
+            <% }) %>
+            <% } else { %>
+            <p>No quizes available.</p>
+            <% } %>
+        </div>
+
+    </div>
+      
+    
+  </body>
+</html>

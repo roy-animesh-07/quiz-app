@@ -14,6 +14,19 @@ const userSchema = new mongoose.Schema({
         type : String,
         required: true,
     }
+    ,role : {
+        type : String,
+        enum : ["user","admin"],
+        default : "user",
+    },
+    createdAt : {
+        type : Date,
+        default : Date.now,
+    },
+    rating : {
+        type : Number,
+        default : 0,
+    },
 },{timestamps : true});
 
 const User =  mongoose.models.user || mongoose.model("user",userSchema);

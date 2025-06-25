@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Live - quiz</title>
+</head>
+<body>
+  <header>
+    <h1>Live Quiz</h1>
+  </header>
+
+  <main>
+    <div id="quiz-container">
+      <h2>Quiz Title: <%= quiz.title %></h2>
+      <p><%= quiz.description %></p>
+
+      <div id="question-container">
+        <% quiz.questions.forEach((question, index) => { %>
+          <div id="<%= question._id %>" class="question" data-index="<%= index %>">
+            <h3><%= question.questionText %></h3>
+            <% question.options.forEach((option, optIndex) => { %>
+              <label>
+                <input 
+                  type="radio" 
+                  name="question-<%= index %>" 
+                  value="<%= option._id %>" />
+                <%= option.optionText %>
+              </label><br>
+            <% }) %>
+          </div>
+        <% }) %>
+      </div>
+
+      <button id="submit-quiz">Submit Quiz</button>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('submit-quiz').addEventListener('click', function () {
+      const answers = [];
+      const questions = document.querySelectorAll('.question');
+
+      questions.forEach((question) => {
+        const selectedOption = question.querySelector('input[type="radio"]:checked');
+        const selectedOptions = selectedOption ? [selectedOption.value] : [];
+
+        answers.push({
+          question: question.getAttribute('id'),
+          selectedOptions: selectedOptions
+        });
+      });
+
+      const quizId = '<%= quiz._id %>';
+
+      fetch(`/quiz/submit/${quizId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          quizId: quizId,
+          answers: answers
+        })
+      })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Network response was not ok');
+        }
+      })
+      .then(data => {
+        alert('Quiz submitted successfully!');
+        window.location.href = '/';
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+    });
+  </script>
+</body>
+</html>
