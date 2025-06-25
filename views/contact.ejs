@@ -18,7 +18,7 @@
                 <li onclick="location.href='/contact'">Contact Us</li>
             </ul>
             <% if(!user) { %>
-                <button class="btn" onclick="location.href='/login'">LoginIn</button>
+                <button class="btn" onclick="location.href='/login'">LogIn</button>
                 <button class="btn" onclick="location.href='/signup'">SignUp</button>
             <% } else {%>
                 <button class="btn" onclick="location.href='/profile'"><%= user.name %></button>
