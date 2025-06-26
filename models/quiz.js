@@ -19,14 +19,12 @@ const quizesSchema = new mongoose.Schema({
     },
     questions: [
         {
-            _id: mongoose.Schema.Types.ObjectId,
             questionText: {
                 type: String,
                 required: true,
             },
             options: [
                 {
-                    _id: mongoose.Schema.Types.ObjectId,
                     optionText: {
                         type: String,
                         required: true,
@@ -41,8 +39,12 @@ const quizesSchema = new mongoose.Schema({
     ],
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "user",
+        ref: "User",
         required: true,
+    },
+    resultOut: {
+        type : Boolean,
+        default :false,
     },
     createdAt: {
         type: Date,
@@ -54,6 +56,6 @@ const quizesSchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
-const quizes = mongoose.models.quizes || mongoose.model("quizes", quizesSchema);
+const Quiz = mongoose.models.Quiz || mongoose.model("Quiz", quizesSchema);
 
-module.exports = quizes;
+module.exports = Quiz;

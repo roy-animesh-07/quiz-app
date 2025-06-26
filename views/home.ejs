@@ -38,26 +38,36 @@
     <% }%>
     </div>
     <div class="mainbody">
+      <br>
       <h3>LIVE-NOW</h3>
+      <br>
       <div class="quiz-list">
         <% if (liveQuizes.length > 0) { %>
           <% liveQuizes.forEach((quiz) => { %>
             <div class="card">
               <h4><%= quiz.title %></h4>
-              <p><%= quiz.description %></p>
+              <p>Maker : <%= quiz.createdBy.name %></p>
+              <p>Description: <%= quiz.description %></p>
+              <p>Ends At: <%= quiz.endTime %></p>
+              <p>Duration : <%= (quiz.endTime-quiz.startTime)/60000 %> Mins</p>
               <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button>
             </div>
           <% }) %>
         <% } else { %>
           <p>No live quizes available.</p>
         <% } %>
+        <br>
       <h3>Upcoming Quizes</h3>
+      <br>
       <div class="quiz-list">
         <% if (upcomingQuizes.length > 0) { %>
           <% upcomingQuizes.forEach((quiz) => { %>
             <div class="card">
               <h4><%= quiz.title %></h4>
-              <p><%= quiz.description %></p>
+              <p>Maker : <%= quiz.createdBy.name %></p>
+              <p>Description: <%= quiz.description %></p>
+              <p>Starts At: <%= quiz.startTime %></p>
+              <p>Duration : <%= (quiz.endTime-quiz.startTime)/60000 %> Mins</p>
               <!-- <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button> -->
             </div>
           <% }) %>
@@ -66,13 +76,17 @@
         <% } %>
      
     </div>
+    <br>
       <h3>Past Quizes</h3>
+      <br>
       <div class="quiz-list">
         <% if (pastQuizes.length > 0) { %>
           <% pastQuizes.forEach((quiz) => { %>
             <div class="card">
               <h4><%= quiz.title %></h4>
-              <p><%= quiz.description %></p>
+              <p>Maker : <%= quiz.createdBy.name %></p>
+              <p>Description: <%= quiz.description %></p>
+              <p>Duration : <%= (quiz.endTime-quiz.startTime)/60000 %> Mins</p>
               <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button>
             </div>
           <% }) %>

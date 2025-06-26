@@ -5,12 +5,12 @@ const quizResponseSchema = new mongoose.Schema(
     {
         quiz: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "quizes",
+        ref: "Quiz",
         required: true,
         },
         user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "user",
+        ref: "User",
         required: true,
         },
         response: [

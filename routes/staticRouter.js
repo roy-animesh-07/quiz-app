@@ -1,16 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const quizes = require("../models/quiz");
+const Quiz = require("../models/quiz");
 const User = require("../models/user");
 const quizResponse = require("../models/quizresponse");
 const { restrictToLoggedinUserOnly } = require("../middlewares/auth");
 
 const liveQuizes = async () => {
   try {
-    const quizesList = await quizes.find({
+    const quizesList = await Quiz.find({
       startTime: { $lte: new Date() },
       endTime: { $gte: new Date() },
-    }).populate("createdBy", "name email").sort({ startTime: 1 }).limit(5);
+    }).populate("createdBy", "name email").sort({ startTime: 1 });
     return quizesList;
   } catch (error) {
     console.error("Error fetching live quizzes:", error);
@@ -19,10 +19,9 @@ const liveQuizes = async () => {
 }
 const upcomingQuizes = async () => {
   try {
-    const quizesList = await quizes.find({
+    const quizesList = await Quiz.find({
       startTime: { $gt: new Date() },
-    }).populate("createdBy", "name email").sort({ startTime: 1 }).limit(5);
-    
+    }).populate("createdBy", "name email").sort({ startTime: 1 });
     return quizesList;
   } catch (error) {
     console.error("Error fetching upcoming quizzes:", error);
@@ -31,9 +30,9 @@ const upcomingQuizes = async () => {
 }
 const pastQuizes = async () => {
   try {
-    const quizesList = await quizes.find({
+    const quizesList = await Quiz.find({
       endTime: { $lt: new Date() },
-    }).populate("createdBy", "name email").sort({ endTime: -1 }).limit(5);
+    }).populate("createdBy", "name email").sort({ endTime: -1 });
     
     return quizesList;
   } catch (error) {
@@ -50,7 +49,7 @@ const userQuizes = async (userId) => {
     if (myAttemptedQuizes.length === 0) {
       return [];
     }
-    const quizesDetails = await quizes.find({
+    const quizesDetails = await Quiz.find({
       _id: { $in: myAttemptedQuizes },
     }).populate("createdBy", "name email").sort({ startTime: -1 }); 
     return quizesDetails;
@@ -86,6 +85,7 @@ router.get("/leaderboard",async (req, res) => {
   });
 });
 router.get("/about", (req, res) => {
+  
   return res.render("about",{
     user:req.user,
   });

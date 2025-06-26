@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="left">
+            <h1>QUIZ-APP</h1>
+        </div>
+        <div class="right">
+            <ul>
+                <li onclick="location.href='/'">Home</li>
+                <li onclick="location.href='/myquizes'">My Quizes</li>
+                <li onclick="location.href='/leaderboard'">Leaderboard</li>
+                <li onclick="location.href='/about'">About</li>
+                <li onclick="location.href='/contact'">Contact Us</li>
+            </ul>
+            <% if(!user) { %>
+                <button class="btn" onclick="location.href='/login'">LogIn</button>
+                <button class="btn" onclick="location.href='/signup'">SignUp</button>
+                <% } else {%>
+                    <button class="btn" onclick="location.href='/profile'">
+                        <%= user.name %>
+                    </button>
+                    <button class="btn" onclick="location.href='/user/logout'">Logout</button>
+                    <% }%>
+        </div>
+    </header>
+
+    <div class="middle">
+        <div class="greet">
+            <% if(!user) { %>
+                <h1>Welcome, Guest</h1>
+                <% } else {%>
+                    <h1>Welcome, <%= user.name %>
+                    </h1>
+                    <% }%>
+        </div>
+        <div class="mainbody">
+            <h1>Result </h1>
+            <br>
+            <h3>Quiz Title: <%= quiz.title%>
+            </h3>
+            <h4>Description : <%=quiz.description%>
+            </h4>
+            <p>Score: <%= userResponse.score%> out of <%= quiz.questions.length%>
+            </p>
+
+            <% quiz.questions.forEach((question, index)=> { %>
+                <div id="<%= question._id %>" class="question" data-index="<%= index %>">
+                    <h3>
+                        <%=index+1%> : <%= question.questionText %>
+                    </h3>
+
+                    <ol>
+                        <% question.options.forEach((option)=> { %>
+                            <li style="margin-left: 25px;">
+                                <%= option.optionText %>
+                            </li><br>
+                            <% }); %>
+                    </ol>
+
+                    <p><strong>Your Response(s):</strong></p>
+                    <ul>
+                        <% const selectedIds=userResponse.response[index].selectedOptions.map(id=> id.toString());
+                            question.options.forEach((option) => {
+                            if (selectedIds.includes(option._id.toString())) {
+                            %>
+                            <li style="margin-left: 25px;">
+                                <%= option.optionText %>
+                            </li>
+                            <% } }); %>
+                    </ul>
+
+                    <p><strong>Correct Answer(s):</strong></p>
+                    <ul>
+                        <% question.options.forEach((option)=> {
+                            if (option.isCorrect) { %>
+                            <li style="margin-left: 25px;">
+                                <%= option.optionText %>
+                            </li>
+                            <% } }); %>
+                    </ul>
+
+                    <p><strong>Verdict:</strong>
+                        <% const correctIds=question.options.filter(opt=> opt.isCorrect).map(opt =>
+                            opt._id.toString()).sort();
+                            const selectedSorted = [...selectedIds].sort();
+                            const verdict = JSON.stringify(correctIds) === JSON.stringify(selectedSorted) ? "Correct" :
+                            "Incorrect";
+                            %>
+                            <%= verdict %>
+                    </p>
+                </div>
+                <% }) %>
+        </div>
+</body>
+
+</html>

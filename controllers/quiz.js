@@ -78,8 +78,48 @@ async function getStandings(req, res) {
         standings: standings,
     });
 }
+async function getResult(req, res) {
+    const { qid, uid } = req.query;
+
+    if (!qid || !uid) {
+        return res.status(400).send("Missing quiz ID or user ID.");
+    }
+
+    try {
+        const quiz = await Quiz.findById(qid).populate("questions");
+        if (!quiz) {
+            return res.status(404).send("Quiz not found");
+        }
+
+        const userResponse = await QuizResponse.findOne({
+            quiz: qid,
+            user: uid
+        });
+
+        if (!userResponse) {
+            return res.status(404).send("User's response not found");
+        }
+
+        const standings = await QuizResponse.find({ quiz: qid })
+            .sort({ score: -1 })
+            .populate("user", "name email");
+
+        res.render("veiwResult", {
+            user: req.user || null,
+            quiz: quiz,
+            standings: standings,
+            userResponse: userResponse
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Internal Server Error");
+    }
+}
+
 module.exports = {
     startQuiz,
     submitQuiz,
-    getStandings
+    getStandings,
+    getResult,
 };

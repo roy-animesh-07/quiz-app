@@ -46,7 +46,7 @@
                 <h4><%= quiz.title %></h4>
                 <p><%= quiz.description %></p>
                 <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button>
-                <button onclick="location.href='/quiz/result/<%= quiz._id %>'">View Result</button>
+                <button onclick="location.href='/quiz/result/?qid=<%= quiz._id %>&uid=<%= user._id %>'">View Result</button>
                 </div>
             <% }) %>
             <% } else { %>
