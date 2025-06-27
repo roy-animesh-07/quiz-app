@@ -80,3 +80,30 @@ header {
     border-radius: 2rem ;
 
 }
+
+.vote-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: Arial, sans-serif;
+}
+
+.vote-container button {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 3px;
+}
+
+.vote-container button:hover {
+  background-color: #dcdcdc;
+  transform: scale(1.05);
+}
+
+.vote-container button:active {
+  background-color: #797474;
+  transform: scale(0.95);
+}

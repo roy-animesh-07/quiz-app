@@ -1,101 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QUIZ-APP</title>
-    <link rel="stylesheet" href="/styles.css" />
-  </head>
-  <body>
-    <header>
-      <div class="left"><h1>QUIZ-APP</h1></div>
-      <div class="right">
-        <ul>
-          <li onclick="location.href='/'">Home</li>
-          <li onclick="location.href='/myquizes'">My Quizes</li>
-          <li onclick="location.href='/leaderboard'">Leaderboard</li>
-          <li onclick="location.href='/about'">About</li>
-          <li onclick="location.href='/contact'">Contact Us</li>
-        </ul>
-        <% if(!user) { %>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QUIZ-APP</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+  <header>
+    <div class="left">
+      <h1>QUIZ-APP</h1>
+    </div>
+    <div class="right">
+      <ul>
+        <li onclick="location.href='/'">Home</li>
+        <li onclick="location.href='/myquizes'">My Quizes</li>
+        <li onclick="location.href='/leaderboard'">Leaderboard</li>
+        <li onclick="location.href='/about'">About</li>
+        <li onclick="location.href='/contact'">Contact Us</li>
+      </ul>
+      <% if(!user) { %>
         <button class="btn" onclick="location.href='/login'">LogIn</button>
         <button class="btn" onclick="location.href='/signup'">SignUp</button>
         <% } else {%>
-        <button class="btn" onclick="location.href='/profile'">
-          <%= user.name %>
-        </button>
-        <button class="btn" onclick="location.href='/user/logout'">
-          Logout
-        </button>
-        <% }%>
-      </div>
-    </header>
-    <div class="middle">
-      <div class="greet"><% if(!user) { %>
-    <h1>Wecome, Guest </h1>
-    <% } else {%>
-      <h1>Wecome, <%= user.name %> </h1>
-    <% }%>
+          <button class="btn" onclick="location.href='/profile'">
+            <%= user.name %>
+          </button>
+          <button class="btn" onclick="location.href='/user/logout'">
+            Logout
+          </button>
+          <% }%>
+    </div>
+  </header>
+  <div class="middle">
+    <div class="greet">
+      <% if(!user) { %>
+        <h1>Wecome, Guest </h1>
+        <% } else {%>
+          <h1>Wecome, <%= user.name %>
+          </h1>
+          <% }%>
     </div>
     <div class="mainbody">
       <br>
       <h3>LIVE-NOW</h3>
       <br>
       <div class="quiz-list">
-        <% if (liveQuizes.length > 0) { %>
-          <% liveQuizes.forEach((quiz) => { %>
+        <% if (liveQuizes.length> 0) { %>
+          <% liveQuizes.forEach((quiz)=> { %>
             <div class="card">
-              <h4><%= quiz.title %></h4>
-              <p>Maker : <%= quiz.createdBy.name %></p>
-              <p>Description: <%= quiz.description %></p>
-              <p>Ends At: <%= quiz.endTime %></p>
+              <h4>
+                <%= quiz.title %>
+              </h4>
+              <p>Maker : <%= quiz.createdBy.name %>
+              </p>
+              <p>Description: <%= quiz.description %>
+              </p>
+              <p>Ends At: <%= quiz.endTime %>
+              </p>
               <p>Duration : <%= (quiz.endTime-quiz.startTime)/60000 %> Mins</p>
               <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button>
+              <br>
+              <div class="vote-container"><button data-id="<%=quiz._id%>" class="vote-btn upvote">↑ </button><span
+                  class="net-score">
+                  <%=quiz.upvote - quiz.downvote %>
+                </span>
+                <button data-id="<%=quiz._id%>" class="vote-btn downvote">↓</button>
+              </div>
+
             </div>
-          <% }) %>
-        <% } else { %>
-          <p>No live quizes available.</p>
-        <% } %>
-        <br>
-      <h3>Upcoming Quizes</h3>
-      <br>
-      <div class="quiz-list">
-        <% if (upcomingQuizes.length > 0) { %>
-          <% upcomingQuizes.forEach((quiz) => { %>
-            <div class="card">
-              <h4><%= quiz.title %></h4>
-              <p>Maker : <%= quiz.createdBy.name %></p>
-              <p>Description: <%= quiz.description %></p>
-              <p>Starts At: <%= quiz.startTime %></p>
-              <p>Duration : <%= (quiz.endTime-quiz.startTime)/60000 %> Mins</p>
-              <!-- <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button> -->
-            </div>
-          <% }) %>
-        <% } else { %>
-          <p>No upcoming quizes available.</p>
-        <% } %>
-     
-    </div>
-    <br>
-      <h3>Past Quizes</h3>
-      <br>
-      <div class="quiz-list">
-        <% if (pastQuizes.length > 0) { %>
-          <% pastQuizes.forEach((quiz) => { %>
-            <div class="card">
-              <h4><%= quiz.title %></h4>
-              <p>Maker : <%= quiz.createdBy.name %></p>
-              <p>Description: <%= quiz.description %></p>
-              <p>Duration : <%= (quiz.endTime-quiz.startTime)/60000 %> Mins</p>
-              <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button>
-            </div>
-          <% }) %>
-        <% } else { %>
-          <p>No past quizes available.</p>
-        <% } %>
+            <% }) %>
+              <% } else { %>
+                <p>No live quizes available.</p>
+                <% } %>
+                  <br>
+                  <h3>Upcoming Quizes</h3>
+                  <br>
+                  <div class="quiz-list">
+                    <% if (upcomingQuizes.length> 0) { %>
+                      <% upcomingQuizes.forEach((quiz)=> { %>
+                        <div class="card">
+                          <h4>
+                            <%= quiz.title %>
+                          </h4>
+                          <p>Maker : <%= quiz.createdBy.name %>
+                          </p>
+                          <p>Description: <%= quiz.description %>
+                          </p>
+                          <p>Starts At: <%= quiz.startTime %>
+                          </p>
+                          <p>Duration : <%= (quiz.endTime-quiz.startTime)/60000 %> Mins</p>
+                          <br>
+                          <div class="vote-container"><button data-id="<%=quiz._id%>" class="vote-btn upvote">↑
+                            </button><span class="net-score">
+                              <%=quiz.upvote - quiz.downvote %>
+                            </span>
+                            <button data-id="<%=quiz._id%>" class="vote-btn downvote">↓</button>
+                          </div>
+                          <!-- <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button> -->
+                        </div>
+                        <% }) %>
+                          <% } else { %>
+                            <p>No upcoming quizes available.</p>
+                            <% } %>
+
+                  </div>
+                  <br>
+                  <h3>Past Quizes</h3>
+                  <br>
+                  <div class="quiz-list">
+                    <% if (pastQuizes.length> 0) { %>
+                      <% pastQuizes.forEach((quiz)=> { %>
+                        <div class="card">
+                          <h4>
+                            <%= quiz.title %>
+                          </h4>
+                          <p>Maker : <%= quiz.createdBy.name %>
+                          </p>
+                          <p>Description: <%= quiz.description %>
+                          </p>
+                          <p>Duration : <%= (quiz.endTime-quiz.startTime)/60000 %> Mins</p>
+                          <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button>
+                          <br>
+                          <div class="vote-container"><button data-id="<%=quiz._id%>" class="vote-btn upvote">↑
+                            </button><span class="net-score">
+                              <%=quiz.upvote - quiz.downvote %>
+                            </span>
+                            <button data-id="<%=quiz._id%>" class="vote-btn downvote">↓</button>
+                          </div>
+                        </div>
+                        <% }) %>
+                          <% } else { %>
+                            <p>No past quizes available.</p>
+                            <% } %>
+                  </div>
       </div>
-    </div>
-      
-    
-  </body>
+
+      <script>
+        document.addEventListener("click", async (e) => {
+          if (e.target.classList.contains("upvote")) {
+            const qid = e.target.dataset.id;
+            try {
+              const res = await fetch(`/quiz/${qid}/upvote`, { method: "POST" });
+              if (!res.ok) {
+                const err = await res.json();
+                console.error("Upvote failed", err);
+                return;
+              }
+              const data = await res.json();
+              const voteContainer = e.target.closest(".vote-container");
+              voteContainer.querySelector(".net-score").innerText = data.upvote - data.downvote;
+
+            } catch (err) {
+              console.error("Network or server error:", err);
+            }
+          }
+          if (e.target.classList.contains("downvote")) {
+            const qid = e.target.dataset.id;
+            try {
+              const res = await fetch(`/quiz/${qid}/downvote`, { method: "POST" });
+              if (!res.ok) {
+                const err = await res.json();
+                console.error("Upvote failed", err);
+                return;
+              }
+              const data = await res.json();
+              const voteContainer = e.target.closest(".vote-container");
+              voteContainer.querySelector(".net-score").innerText = data.upvote - data.downvote;
+
+            } catch (err) {
+              console.error("Network or server error:", err);
+            }
+          }
+        })
+      </script>
+</body>
+
 </html>

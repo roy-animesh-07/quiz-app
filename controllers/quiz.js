@@ -1,5 +1,6 @@
 const Quiz = require("../models/quiz");
 const QuizResponse = require("../models/quizresponse");
+const User = require("../models/user");
 
 async function startQuiz(req,res) {
     const quizId = req.params.id;
@@ -116,10 +117,76 @@ async function getResult(req, res) {
         res.status(500).send("Internal Server Error");
     }
 }
+async function handleUpvote(req, res) {
+  try {
+    const uid = req.user._id.toString(); 
+    const qid = req.params.id;
+
+    const quiz = await Quiz.findById(qid);
+    if (!quiz) return res.status(404).json({ error: "Quiz not found" });
+
+    const alreadyUpvoted = quiz.upvotedBy.includes(uid);
+    const alreadyDownvoted = quiz.downvotedBy.includes(uid);
+
+    if (alreadyUpvoted) {
+      return res.status(400).json({ error: "You already upvoted this quiz." });
+    }
+
+    if (alreadyDownvoted) {
+      quiz.downvotedBy = quiz.downvotedBy.filter(id => id.toString() !== uid);
+      quiz.downvote--;
+    }
+
+    quiz.upvotedBy.push(uid);
+    quiz.upvote++;
+
+    await quiz.save();
+
+    return res.json({ upvote: quiz.upvote, downvote: quiz.downvote });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Server error." });
+  }
+}
+
+async function handleDownvote(req, res) {
+  try {
+    const uid = req.user._id.toString(); 
+    const qid = req.params.id;
+
+    const quiz = await Quiz.findById(qid);
+    if (!quiz) return res.status(404).json({ error: "Quiz not found" });
+
+    const alreadyUpvoted = quiz.upvotedBy.includes(uid);
+    const alreadyDownvoted = quiz.downvotedBy.includes(uid);
+
+    if (alreadyDownvoted) {
+      return res.status(400).json({ error: "You already downvoted this quiz." });
+    }
+
+    if (alreadyUpvoted) {
+      quiz.upvotedBy = quiz.upvotedBy.filter(id => id.toString() !== uid);
+      quiz.upvote--;
+    }
+
+    quiz.downvotedBy.push(uid);
+    quiz.downvote++;
+
+    await quiz.save();
+
+    return res.json({ upvote: quiz.upvote, downvote: quiz.downvote });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Server error." });
+  }
+}
+
 
 module.exports = {
     startQuiz,
     submitQuiz,
     getStandings,
     getResult,
+    handleUpvote,
+    handleDownvote,
 };
