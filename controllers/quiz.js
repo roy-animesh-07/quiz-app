@@ -183,19 +183,29 @@ async function handleDownvote(req, res) {
   }
 }
 
+async function myAIgeneratedQuizzes(id) {
+  try {
+    const myallAIgeneratedQuizzes = await Quiz.find({
+      createdBy:id,
+    }).populate("createdBy", "name email").sort({ startTime: 1 });
+    return myallAIgeneratedQuizzes;
+  } catch (error) {
+    console.error("Error fetching live quizzes:", error);
+    return [];
+  }
+}
 async function handleCreateQuizByAirender(req,res) {
    return res.render("createQuizByAi",{
     user:req.user,
+    myAIgeneratedQuizzes:await myAIgeneratedQuizzes(req.user._id.toString()),
   });
 }
 async function handleCreateQuizByAigenerator(req, res) {
   try {
 
     const { title, description, duration } = req.body;
-    const startTime = new Date(req.body["start-time"]);
-    const endTime = new Date(req.body["end-time"]);
 
-    const prompt = `
+    const prompt1 = `
     Generate 5 multiple-choice quiz questions on the topic "${title}".
     Here's a little description of the quiz - "${description}".
     Each question must be an object in this JSON format:
@@ -215,20 +225,26 @@ async function handleCreateQuizByAigenerator(req, res) {
     - Avoid extra text or markdown
     - Respond with a pure JSON array containing 5 such questions
     `;
-    const aiText = await generateQuizQuestions(prompt);
-    let questions = JSON.parse(aiText);
+    const prompt2 = `
+    Generate a public description of a quiz of title :  "${title}".
+    Here's a little description of the quiz - "${description}".
+    your output should be just a string whose value is the description.
+    
+    `;
 
-    let quizdes = "";
+    const aiText = await generateQuizQuestions(prompt1);
+    const quizdes = await generateQuizQuestions(prompt2);
+    let questions = JSON.parse(aiText);
 
 
     const newQuiz = new Quiz({
       title,
-      description,
-      startTime,
-      endTime,
+      description:quizdes,
       questions,
       duration,
       createdBy: req.user._id,
+      forall:false,
+      resultOut:true,
     });
 
     await newQuiz.save();

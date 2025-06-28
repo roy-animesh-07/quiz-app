@@ -8,9 +8,10 @@
     <style>
         /* General form layout */
 #form-quiz {
-  max-width: 500px;
-  margin: 40px auto;
-  padding: 25px;
+  max-width: 275px;
+  margin: 20px 0px;
+  
+  padding: 15px;
   background-color: #f9f9f9;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -78,6 +79,20 @@
   border-color: #007bff;
   outline: none;
 }
+.mainbody{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.pastcreatedquiz{
+  max-width: 50%;
+}
+.pastcreatedquiz .quiz-list{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 
 
     </style>
@@ -112,22 +127,40 @@
             <% }%>
         </div>
         <div class="mainbody">
-           <h1>Generated your own AI Quiz Instantly</h1>
+           <div class="createquiz"><h3>Generated your own AI Quiz Instantly</h3>
            <form id="form-quiz">
             <label for="title">Enter Title of Quiz</label>
             <input type="text" name="title">
 
-            <label for="start-time">start time</label>
-            <input type="datetime-local" name="start-time">
-            <label for="end-time">End-time</label>
-            <input type="datetime-local" name="end-time">
             <label for="duration">Duration in min</label>
             <input type="number" name="duration">
             <label for="description">Describe your Quiz clearly</label>
             <textarea name="description" rows="4"></textarea>
             <button type="submit">Create Quiz</button>
 
-           </form>
+           </form></div>
+           <div class="pastcreatedquiz">
+            <div class="quiz-list">
+                    <h3>Your previously AI generated quizzes</h3>
+                    <br>
+                    <% if (myAIgeneratedQuizzes.length> 0) { %>
+                      <% myAIgeneratedQuizzes.forEach((quiz)=> { %>
+                        <div class="card">
+                          <h4>
+                            <%= quiz.title %>
+                          </h4>
+                          <p>Description: <%= quiz.description %>
+                          </p>
+                          <p>Duration : <%= quiz.duration %> Mins</p>
+                          <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button>
+                          <br>
+                        </div>
+                        <% }) %>
+                          <% } else { %>
+                            <p>Generate your first AI quiz </p>
+                            <% } %>
+                  </div>
+           </div>
         </div>
         <script>
   document.getElementById("form-quiz").addEventListener("submit", async function (e) {
@@ -140,8 +173,6 @@
     title: form.title.value,
     description: form.description.value,
     duration: form.duration.value,
-    "start-time": form["start-time"].value,
-    "end-time": form["end-time"].value,
   };
 
 
@@ -157,8 +188,9 @@
     const result = await response.json();
 
     if (result.success) {
-      alert(" Quiz created successfully!");
+      alert(" Quiz created successfully! ");
       form.reset();
+      window.location.href = "/quiz/createQuizByAi";
     } else {
       alert(" Failed to create quiz.");
     }

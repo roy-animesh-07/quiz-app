@@ -62,7 +62,7 @@
               </p>
               <p>Ends At: <%= quiz.endTime %>
               </p>
-              <p>Duration : <%= (quiz.endTime-quiz.startTime)/60000 %> Mins</p>
+              <p>Duration : <%= quiz.duration %> Mins</p>
               <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button>
               <br>
               <div class="vote-container"><button data-id="<%=quiz._id%>" class="vote-btn upvote">↑ </button><span
@@ -93,7 +93,7 @@
                           </p>
                           <p>Starts At: <%= quiz.startTime %>
                           </p>
-                          <p>Duration : <%= (quiz.endTime-quiz.startTime)/60000 %> Mins</p>
+                          <p>Duration : <%= quiz.duration %> Mins</p>
                           <br>
                           <div class="vote-container"><button data-id="<%=quiz._id%>" class="vote-btn upvote">↑
                             </button><span class="net-score">
@@ -123,7 +123,7 @@
                           </p>
                           <p>Description: <%= quiz.description %>
                           </p>
-                          <p>Duration : <%= (quiz.endTime-quiz.startTime)/60000 %> Mins</p>
+                          <p>Duration : <%= quiz.duration %> Mins</p>
                           <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button>
                           <br>
                           <div class="vote-container"><button data-id="<%=quiz._id%>" class="vote-btn upvote">↑

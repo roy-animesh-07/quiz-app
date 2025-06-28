@@ -10,6 +10,7 @@ const liveQuizes = async () => {
     const quizesList = await Quiz.find({
       startTime: { $lte: new Date() },
       endTime: { $gte: new Date() },
+      forall: true,
     }).populate("createdBy", "name email").sort({ startTime: 1 });
     return quizesList;
   } catch (error) {
@@ -21,6 +22,7 @@ const upcomingQuizes = async () => {
   try {
     const quizesList = await Quiz.find({
       startTime: { $gt: new Date() },
+      forall: true,
     }).populate("createdBy", "name email").sort({ startTime: 1 });
     return quizesList;
   } catch (error) {
@@ -32,6 +34,7 @@ const pastQuizes = async () => {
   try {
     const quizesList = await Quiz.find({
       endTime: { $lt: new Date() },
+      forall: true,
     }).populate("createdBy", "name email").sort({ endTime: -1 });
     
     return quizesList;
