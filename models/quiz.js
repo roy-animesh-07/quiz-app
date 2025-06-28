@@ -17,6 +17,10 @@ const quizesSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
+    duration: {
+        type: Number,
+        required: true,
+    },
     questions: [
         {
             questionText: {
@@ -60,6 +64,10 @@ const quizesSchema = new mongoose.Schema({
             ref: "User",
         }
     ],
+    forall :{
+        type: Boolean,
+        default: false,
+    },
     downvotedBy :[
         {
             type: mongoose.Schema.Types.ObjectId,

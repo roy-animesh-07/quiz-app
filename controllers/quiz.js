@@ -1,6 +1,8 @@
 const Quiz = require("../models/quiz");
 const QuizResponse = require("../models/quizresponse");
 const User = require("../models/user");
+const { generateQuizQuestions } = require("../utils/gemeniAI")
+
 
 async function startQuiz(req,res) {
     const quizId = req.params.id;
@@ -181,6 +183,63 @@ async function handleDownvote(req, res) {
   }
 }
 
+async function handleCreateQuizByAirender(req,res) {
+   return res.render("createQuizByAi",{
+    user:req.user,
+  });
+}
+async function handleCreateQuizByAigenerator(req, res) {
+  try {
+
+    const { title, description, duration } = req.body;
+    const startTime = new Date(req.body["start-time"]);
+    const endTime = new Date(req.body["end-time"]);
+
+    const prompt = `
+    Generate 5 multiple-choice quiz questions on the topic "${title}".
+    Here's a little description of the quiz - "${description}".
+    Each question must be an object in this JSON format:
+
+    {
+      "questionText": "Your question here",
+      "options": [
+        { "optionText": "Option 1", "isCorrect": false },
+        { "optionText": "Option 2", "isCorrect": false },
+        { "optionText": "Correct Option", "isCorrect": true },
+        { "optionText": "Option 4", "isCorrect": false }
+      ]
+    }
+
+    Guidelines:
+    - Options should be realistic and related
+    - Avoid extra text or markdown
+    - Respond with a pure JSON array containing 5 such questions
+    `;
+    const aiText = await generateQuizQuestions(prompt);
+    let questions = JSON.parse(aiText);
+
+    let quizdes = "";
+
+
+    const newQuiz = new Quiz({
+      title,
+      description,
+      startTime,
+      endTime,
+      questions,
+      duration,
+      createdBy: req.user._id,
+    });
+
+    await newQuiz.save();
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Error in quiz creation:", err);
+    res.status(500).json({ success: false });
+  }
+}
+
+
 
 module.exports = {
     startQuiz,
@@ -189,4 +248,6 @@ module.exports = {
     getResult,
     handleUpvote,
     handleDownvote,
+    handleCreateQuizByAirender,
+    handleCreateQuizByAigenerator,
 };

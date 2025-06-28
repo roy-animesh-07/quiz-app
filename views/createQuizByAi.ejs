@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz -App</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        /* General form layout */
+#form-quiz {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 25px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Label styles */
+#form-quiz label {
+  display: block;
+  margin-bottom: 8px;
+  margin-top: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Input styles */
+#form-quiz input[type="text"],
+#form-quiz input[type="datetime-local"],
+#form-quiz input[type="number"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+/* On focus */
+#form-quiz input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Optional: Add spacing for a submit button */
+#form-quiz button[type="submit"] {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#form-quiz button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+#form-quiz textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  resize: vertical; /* Allows user to resize if needed */
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+  line-height: 1.5;
+}
+
+#form-quiz textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="left"><h1>QUIZ-APP</h1></div>
+        <div class="right">
+            <ul>
+                <li onclick="location.href='/'">Home</li>
+                <li onclick="location.href='/myquizes'">My Quizes</li>
+                <li onclick="location.href='/leaderboard'">Leaderboard</li>
+                <li onclick="location.href='/about'">About</li>
+                <li onclick="location.href='/contact'">Contact Us</li>
+            </ul>
+            <% if(!user) { %>
+                <button class="btn" onclick="location.href='/login'">LogIn</button>
+                <button class="btn" onclick="location.href='/signup'">SignUp</button>
+            <% } else {%>
+                <button class="btn" onclick="location.href='/profile'"><%= user.name %></button>
+                <button class="btn" onclick="location.href='/user/logout'">Logout</button>
+            <% }%>
+        </div>
+    </header>
+
+    <div class="middle">
+        <div class="greet">
+            <% if(!user) { %>
+                <h1>Welcome, Guest</h1>
+            <% } else {%>
+                <h1>Welcome, <%= user.name %></h1>
+            <% }%>
+        </div>
+        <div class="mainbody">
+           <h1>Generated your own AI Quiz Instantly</h1>
+           <form id="form-quiz">
+            <label for="title">Enter Title of Quiz</label>
+            <input type="text" name="title">
+
+            <label for="start-time">start time</label>
+            <input type="datetime-local" name="start-time">
+            <label for="end-time">End-time</label>
+            <input type="datetime-local" name="end-time">
+            <label for="duration">Duration in min</label>
+            <input type="number" name="duration">
+            <label for="description">Describe your Quiz clearly</label>
+            <textarea name="description" rows="4"></textarea>
+            <button type="submit">Create Quiz</button>
+
+           </form>
+        </div>
+        <script>
+  document.getElementById("form-quiz").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const form = e.target;
+
+  // Manually gather form data
+  const data = {
+    title: form.title.value,
+    description: form.description.value,
+    duration: form.duration.value,
+    "start-time": form["start-time"].value,
+    "end-time": form["end-time"].value,
+  };
+
+
+  try {
+    const response = await fetch(form.action, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      alert(" Quiz created successfully!");
+      form.reset();
+    } else {
+      alert(" Failed to create quiz.");
+    }
+  } catch (err) {
+    console.error(" Error:", err);
+    alert("Something went wrong!");
+  }
+});
+
+</script>
+
+</body>
+</html>

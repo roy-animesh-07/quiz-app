@@ -37,11 +37,13 @@
   <div class="middle">
     <div class="greet">
       <% if(!user) { %>
-        <h1>Wecome, Guest </h1>
+        <h1>Welcome, Guest </h1>
         <% } else {%>
-          <h1>Wecome, <%= user.name %>
+          <h1>Welcome, <%= user.name %>
           </h1>
           <% }%>
+          <button onclick="location.href='/quiz/createQuizByAi'" id="ai-quiz-btn">Instant AI-Generated Quiz</button>
+
     </div>
     <div class="mainbody">
       <br>
