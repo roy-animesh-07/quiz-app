@@ -1,0 +1,23 @@
+<div class="left">
+      <h1>QUIZ-APP</h1>
+    </div>
+    <div class="right">
+      <ul>
+        <li onclick="location.href='/'">Home</li>
+        <li onclick="location.href='/myquizes'">My Quizes</li>
+        <li onclick="location.href='/leaderboard'">Leaderboard</li>
+        <li onclick="location.href='/about'">About</li>
+        <li onclick="location.href='/contact'">Contact Us</li>
+      </ul>
+      <% if(!user) { %>
+        <button class="btn" onclick="location.href='/login'">LogIn</button>
+        <button class="btn" onclick="location.href='/signup'">SignUp</button>
+        <% } else {%>
+          <button class="btn" onclick="location.href='/profile'">
+            <%= user.name %>
+          </button>
+          <button class="btn" onclick="location.href='/user/logout'">
+            Logout
+          </button>
+          <% }%>
+    </div>

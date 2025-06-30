@@ -6,33 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>QUIZ-APP</title>
   <link rel="stylesheet" href="/styles.css" />
+  <%- include('partials/head-boot.ejs') %>
 </head>
 
 <body>
   <header>
-    <div class="left">
-      <h1>QUIZ-APP</h1>
-    </div>
-    <div class="right">
-      <ul>
-        <li onclick="location.href='/'">Home</li>
-        <li onclick="location.href='/myquizes'">My Quizes</li>
-        <li onclick="location.href='/leaderboard'">Leaderboard</li>
-        <li onclick="location.href='/about'">About</li>
-        <li onclick="location.href='/contact'">Contact Us</li>
-      </ul>
-      <% if(!user) { %>
-        <button class="btn" onclick="location.href='/login'">LogIn</button>
-        <button class="btn" onclick="location.href='/signup'">SignUp</button>
-        <% } else {%>
-          <button class="btn" onclick="location.href='/profile'">
-            <%= user.name %>
-          </button>
-          <button class="btn" onclick="location.href='/user/logout'">
-            Logout
-          </button>
-          <% }%>
-    </div>
+    <%- include('./partials/nav') %>
   </header>
   <div class="middle">
     <div class="greet">
@@ -42,7 +21,7 @@
           <h1>Welcome, <%= user.name %>
           </h1>
           <% }%>
-          <button onclick="location.href='/quiz/createQuizByAi'" id="ai-quiz-btn">Instant AI-Generated Quiz</button>
+            <button onclick="location.href='/quiz/createQuizByAi'" id="ai-quiz-btn">Instant AI-Generated Quiz</button>
 
     </div>
     <div class="mainbody">
@@ -65,12 +44,16 @@
               <p>Duration : <%= quiz.duration %> Mins</p>
               <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button>
               <br>
-              <div class="vote-container"><button data-id="<%=quiz._id%>" class="vote-btn upvote">↑ </button><span
-                  class="net-score">
-                  <%=quiz.upvote - quiz.downvote %>
-                </span>
-                <button data-id="<%=quiz._id%>" class="vote-btn downvote">↓</button>
+              <div class="card-footer " style="display: flex; justify-content: space-between; ">
+                <div class="vote-container"><button data-id="<%=quiz._id%>" class="vote-btn upvote">↑ </button><span
+                    class="net-score">
+                    <%=quiz.upvote - quiz.downvote %>
+                  </span>
+                  <button data-id="<%=quiz._id%>" class="vote-btn downvote">↓</button>
+                </div>
+                <div class="comments"><a href="/quiz/<%= quiz._id %>/comments">Comments</a></div>
               </div>
+
 
             </div>
             <% }) %>
@@ -94,14 +77,16 @@
                           <p>Starts At: <%= quiz.startTime %>
                           </p>
                           <p>Duration : <%= quiz.duration %> Mins</p>
-                          <br>
-                          <div class="vote-container"><button data-id="<%=quiz._id%>" class="vote-btn upvote">↑
-                            </button><span class="net-score">
-                              <%=quiz.upvote - quiz.downvote %>
-                            </span>
-                            <button data-id="<%=quiz._id%>" class="vote-btn downvote">↓</button>
-                          </div>
                           <!-- <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button> -->
+                          <div class="card-footer " style="display: flex; justify-content: space-between; ">
+                            <div class="vote-container"><button data-id="<%=quiz._id%>" class="vote-btn upvote">↑
+                              </button><span class="net-score">
+                                <%=quiz.upvote - quiz.downvote %>
+                              </span>
+                              <button data-id="<%=quiz._id%>" class="vote-btn downvote">↓</button>
+                            </div>
+                            <div class="comments"><a href="/quiz/<%= quiz._id %>/comments">Comments</a></div>
+                          </div>
                         </div>
                         <% }) %>
                           <% } else { %>
@@ -126,11 +111,14 @@
                           <p>Duration : <%= quiz.duration %> Mins</p>
                           <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button>
                           <br>
-                          <div class="vote-container"><button data-id="<%=quiz._id%>" class="vote-btn upvote">↑
-                            </button><span class="net-score">
-                              <%=quiz.upvote - quiz.downvote %>
-                            </span>
-                            <button data-id="<%=quiz._id%>" class="vote-btn downvote">↓</button>
+                          <div class="card-footer " style="display: flex; justify-content: space-between; ">
+                            <div class="vote-container"><button data-id="<%=quiz._id%>" class="vote-btn upvote">↑
+                              </button><span class="net-score">
+                                <%=quiz.upvote - quiz.downvote %>
+                              </span>
+                              <button data-id="<%=quiz._id%>" class="vote-btn downvote">↓</button>
+                            </div>
+                            <div class="comments"><a href="/quiz/<%= quiz._id %>/comments">Comments</a></div>
                           </div>
                         </div>
                         <% }) %>
@@ -178,6 +166,7 @@
           }
         })
       </script>
+      <%- include('partials/script-boot.ejs') %>
 </body>
 
 </html>

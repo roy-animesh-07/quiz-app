@@ -1,5 +1,5 @@
 const express = require("express");
-const { startQuiz, submitQuiz, getStandings,getResult,handleUpvote,handleDownvote,handleCreateQuizByAirender,handleCreateQuizByAigenerator } = require("../controllers/quiz.js");
+const { startQuiz, submitQuiz, getStandings,getResult,handleUpvote,handleDownvote,handleCreateQuizByAirender,handleCreateQuizByAigenerator,handleComments,handleCreateComments } = require("../controllers/quiz.js");
 const {restrictToLoggedinUserOnly,isResultOut} = require("../middlewares/auth.js");
 const router = express.Router();
 
@@ -11,6 +11,8 @@ router.post("/:id/upvote",handleUpvote);
 router.post("/:id/downvote",handleDownvote);
 router.get("/createQuizByAi",handleCreateQuizByAirender);
 router.post("/createQuizByAi",handleCreateQuizByAigenerator);
+router.get("/:id/comments",handleComments);
+router.post("/:id/comments",handleCreateComments);
 
 
 module.exports = router;

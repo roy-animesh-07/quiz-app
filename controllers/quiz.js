@@ -2,6 +2,7 @@ const Quiz = require("../models/quiz");
 const QuizResponse = require("../models/quizresponse");
 const User = require("../models/user");
 const { generateQuizQuestions } = require("../utils/gemeniAI")
+const Comment =require("../models/comment");
 
 
 async function startQuiz(req,res) {
@@ -255,6 +256,26 @@ async function handleCreateQuizByAigenerator(req, res) {
   }
 }
 
+async function handleComments(req,res) {
+  const quiz = await Quiz.findById(req.params.id).populate("createdBy");
+  const comments = await Comment.find({ quizId: req.params.id }).populate(
+    "createdBy"
+  );
+   return res.render("quiz-detail",{
+    user:req.user,
+    quiz,
+    comments,
+  });
+}
+async function handleCreateComments(req,res) {
+ await Comment.create({
+    content: req.body.content,
+    quizId: req.params.id,
+    createdBy: req.user._id,
+  });
+  return res.redirect(`/quiz/${req.params.id}/comments`);
+}
+
 
 
 module.exports = {
@@ -266,4 +287,6 @@ module.exports = {
     handleDownvote,
     handleCreateQuizByAirender,
     handleCreateQuizByAigenerator,
+    handleComments,
+    handleCreateComments,
 };

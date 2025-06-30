@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="/styles.css">
+    <%- include('partials/head-boot.ejs') %>
+</head>
+
+<body>
+    <header>
+        <%- include('./partials/nav') %>
+    </header>
+
+    <div class="middle">
+        <div class="greet">
+            <% if(!user) { %>
+                <h1>Welcome, Guest</h1>
+                <% } else {%>
+                    <h1>Welcome, <%= user.name %>
+                    </h1>
+                    <% }%>
+        </div>
+        <div class="mainbody">
+            <div class="card">
+              <h4>
+                <%= quiz.title %>
+              </h4>
+              <p>Maker : <%= quiz.createdBy.name %>
+              </p>
+              <p>Description: <%= quiz.description %>
+              </p>
+              <p>Ends At: <%= quiz.endTime %>
+              </p>
+              <p>Duration : <%= quiz.duration %> Mins</p>
+              <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button>
+              <br>
+              <div class="card-footer " style="display: flex; justify-content: space-between; ">
+                <div class="vote-container"><button data-id="<%=quiz._id%>" class="vote-btn upvote">↑ </button><span
+                    class="net-score">
+                    <%=quiz.upvote - quiz.downvote %>
+                  </span>
+                  <button data-id="<%=quiz._id%>" class="vote-btn downvote">↓</button>
+                </div>
+                <div class="createrProfile"><a href="/profile/<%= quiz.createdBy._id %>"><%= quiz.createdBy.name %></a></div>
+              </div>
+
+
+            </div>
+
+
+            <div class="container mt-3">
+                <h1>Comments (<%= comments.length %>)</h1>
+                <% if (locals.user) { %>
+                    <form action="/quiz/<%= quiz._id %>/comments" method="post">
+                        <div class="mb-3">
+                            <input type="text" name="content" class="form-control" placeholder="Enter your comment" />
+                            <button class="btn btn-sm btn-primary" type="submit">Add</button>
+                        </div>
+                    </form>
+
+                    <% } %>
+                        <div class="mt-3">
+                            <% comments.forEach(comment=> { %>
+                                <div class="comment-card">
+                                    <%= comment.createdBy.name %>:
+                                        <pre class="mx-3"> <%= comment.content %></pre>
+                                </div>
+                                <% }) %>
+                        </div>
+            </div>
+        </div>
+        <%- include('partials/script-boot.ejs') %>
+</body>
+
+</html>
