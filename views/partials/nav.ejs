@@ -1,23 +1,76 @@
-<div class="left">
-      <h1>QUIZ-APP</h1>
-    </div>
-    <div class="right">
-      <ul>
-        <li onclick="location.href='/'">Home</li>
-        <li onclick="location.href='/myquizes'">My Quizes</li>
-        <li onclick="location.href='/leaderboard'">Leaderboard</li>
-        <li onclick="location.href='/about'">About</li>
-        <li onclick="location.href='/contact'">Contact Us</li>
-      </ul>
-      <% if(!user) { %>
-        <button class="btn" onclick="location.href='/login'">LogIn</button>
-        <button class="btn" onclick="location.href='/signup'">SignUp</button>
-        <% } else {%>
-          <button class="btn" onclick="location.href='/profile'">
+<!-- <div class="left">
+  <h1>QUIZ-APP</h1>
+</div>
+<div class="right">
+  <ul>
+    <li onclick="location.href='/'">Home</li>
+    <li onclick="location.href='/myquizes'">My Quizes</li>
+    <li onclick="location.href='/leaderboard'">Leaderboard</li>
+    <li onclick="location.href='/about'">About</li>
+    <li onclick="location.href='/contact'">Contact Us</li>
+  </ul>
+  <% if(!user) { %>
+    <button class="btn" onclick="location.href='/login'">LogIn</button>
+    <button class="btn" onclick="location.href='/signup'">SignUp</button>
+    <% } else {%>
+      <button class="btn" onclick="location.href='/profile'">
+        <%= user.name %>
+      </button>
+      <button class="btn" onclick="location.href='/user/logout'">
+        Logout
+      </button>
+      <% }%>
+</div> -->
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary " data-bs-theme="dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">QUIZ-APP</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="nav justify-content-end">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/myquizes">My Quizes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/leaderboard">Leaderboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact">contact</a>
+        </li>
+        <% if(!user) { %>
+    <li class="nav-item">
+          <a class="nav-link" href="/login">Login</a>
+        </li>
+    <li class="nav-item">
+          <a class="nav-link" href="/signup">SignUp</a>
+        </li>
+    <% } else {%>
+      <li class="nav-item dropdown">
+
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <%= user.name %>
-          </button>
-          <button class="btn" onclick="location.href='/user/logout'">
-            Logout
-          </button>
-          <% }%>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/profile/<%= user._id %>">Profile</a></li>
+            <li><a class="dropdown-item" href="/user/logout">logout</a></li>
+          </ul>
+        </li>
+      <% }%>
+        
+        
+      </ul>
+      
+       
     </div>
+     
+  </div>
+</nav>

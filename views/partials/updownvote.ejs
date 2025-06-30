@@ -1,0 +1,38 @@
+<script>
+        document.addEventListener("click", async (e) => {
+          if (e.target.classList.contains("upvote")) {
+            const qid = e.target.dataset.id;
+            try {
+              const res = await fetch(`/quiz/${qid}/upvote`, { method: "POST" });
+              if (!res.ok) {
+                const err = await res.json();
+                console.error("Upvote failed", err);
+                return;
+              }
+              const data = await res.json();
+              const voteContainer = e.target.closest(".vote-container");
+              voteContainer.querySelector(".net-score").innerText = data.upvote - data.downvote;
+
+            } catch (err) {
+              console.error("Network or server error:", err);
+            }
+          }
+          if (e.target.classList.contains("downvote")) {
+            const qid = e.target.dataset.id;
+            try {
+              const res = await fetch(`/quiz/${qid}/downvote`, { method: "POST" });
+              if (!res.ok) {
+                const err = await res.json();
+                console.error("Upvote failed", err);
+                return;
+              }
+              const data = await res.json();
+              const voteContainer = e.target.closest(".vote-container");
+              voteContainer.querySelector(".net-score").innerText = data.upvote - data.downvote;
+
+            } catch (err) {
+              console.error("Network or server error:", err);
+            }
+          }
+        })
+      </script>

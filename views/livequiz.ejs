@@ -4,21 +4,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Live - quiz</title>
+  <%- include('partials/head-boot.ejs') %>
+  <style>
+    #timer{
+      height: 50px;
+      width: 100px;
+      margin: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1>Live Quiz</h1>
+    <h1 >Live Quiz</h1>
   </header>
 
   <main>
     <div id="quiz-container">
-      <h2>Quiz Title: <%= quiz.title %></h2>
-      <p><%= quiz.description %></p>
+      <div class="d-flex justify-content-between px-4"><h2>Quiz Title: <%= quiz.title %></h2>
+      <div id="timer"class="bg-dark text-white ">00:00</div></div>
+      
 
-      <div id="question-container">
+      <div id="question-container" class="px-5">
         <% quiz.questions.forEach((question, index) => { %>
-          <div id="<%= question._id %>" class="question" data-index="<%= index %>">
-            <h3><%= question.questionText %></h3>
+          <div id="<%= question._id %>" class="question card p-3" data-index="<%= index %>">
+            <h3><%= index+1 %>.<%= question.questionText %></h3>
             <% question.options.forEach((option, optIndex) => { %>
               <label>
                 <input 
@@ -32,7 +44,7 @@
         <% }) %>
       </div>
 
-      <button id="submit-quiz">Submit Quiz</button>
+      <button class="btn btn-primary mx-5" id="submit-quiz">Submit Quiz</button>
     </div>
   </main>
 
@@ -78,6 +90,19 @@
         console.error('There was a problem with the fetch operation:', error);
       });
     });
+      const duration = '<%= quiz.duration %>';
+      let ti = duration*60;
+
+  setInterval(() => {
+    let disText = Math.floor((ti)/60) + ":"+(ti)%60;
+    document.getElementById("timer").innerText = disText;
+    ti=ti-1;
+  },1000);
+  setTimeout(()=>{
+    alert("Times UP! \n Answers will be auto submitted!" );
+    document.getElementById("submit-quiz").click();
+  },duration*60*1000);
+
   </script>
   <%- include('partials/script-boot.ejs') %>
 </body>

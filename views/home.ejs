@@ -10,11 +10,9 @@
 </head>
 
 <body>
-  <header>
     <%- include('./partials/nav') %>
-  </header>
   <div class="middle">
-    <div class="greet">
+    <div class="greet container-fluid">
       <% if(!user) { %>
         <h1>Welcome, Guest </h1>
         <% } else {%>
@@ -24,8 +22,7 @@
             <button onclick="location.href='/quiz/createQuizByAi'" id="ai-quiz-btn">Instant AI-Generated Quiz</button>
 
     </div>
-    <div class="mainbody">
-      <br>
+    <div class="mainbody bg-body-secondary">
       <h3>LIVE-NOW</h3>
       <br>
       <div class="quiz-list">
@@ -42,7 +39,7 @@
               <p>Ends At: <%= quiz.endTime %>
               </p>
               <p>Duration : <%= quiz.duration %> Mins</p>
-              <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button>
+              <button class="btn btn-secondary w-25" onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button>
               <br>
               <div class="card-footer " style="display: flex; justify-content: space-between; ">
                 <div class="vote-container"><button data-id="<%=quiz._id%>" class="vote-btn upvote">↑ </button><span
@@ -109,7 +106,7 @@
                           <p>Description: <%= quiz.description %>
                           </p>
                           <p>Duration : <%= quiz.duration %> Mins</p>
-                          <button onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button>
+                          <button class="btn btn-secondary w-25"onclick="location.href='/quiz/start/<%= quiz._id %>'">Start Quiz</button>
                           <br>
                           <div class="card-footer " style="display: flex; justify-content: space-between; ">
                             <div class="vote-container"><button data-id="<%=quiz._id%>" class="vote-btn upvote">↑
@@ -128,44 +125,7 @@
                   </div>
       </div>
 
-      <script>
-        document.addEventListener("click", async (e) => {
-          if (e.target.classList.contains("upvote")) {
-            const qid = e.target.dataset.id;
-            try {
-              const res = await fetch(`/quiz/${qid}/upvote`, { method: "POST" });
-              if (!res.ok) {
-                const err = await res.json();
-                console.error("Upvote failed", err);
-                return;
-              }
-              const data = await res.json();
-              const voteContainer = e.target.closest(".vote-container");
-              voteContainer.querySelector(".net-score").innerText = data.upvote - data.downvote;
-
-            } catch (err) {
-              console.error("Network or server error:", err);
-            }
-          }
-          if (e.target.classList.contains("downvote")) {
-            const qid = e.target.dataset.id;
-            try {
-              const res = await fetch(`/quiz/${qid}/downvote`, { method: "POST" });
-              if (!res.ok) {
-                const err = await res.json();
-                console.error("Upvote failed", err);
-                return;
-              }
-              const data = await res.json();
-              const voteContainer = e.target.closest(".vote-container");
-              voteContainer.querySelector(".net-score").innerText = data.upvote - data.downvote;
-
-            } catch (err) {
-              console.error("Network or server error:", err);
-            }
-          }
-        })
-      </script>
+      <%- include('partials/updownvote.ejs') %>
       <%- include('partials/script-boot.ejs') %>
 </body>
 
