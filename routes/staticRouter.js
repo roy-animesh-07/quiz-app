@@ -3,7 +3,7 @@ const router = express.Router();
 const Quiz = require("../models/quiz");
 const User = require("../models/user");
 const quizResponse = require("../models/quizresponse");
-const { restrictToLoggedinUserOnly } = require("../middlewares/auth");
+const {restrictToAdminsOnly} = require("../middlewares/auth");
 
 const liveQuizes = async () => {
   try {
@@ -72,7 +72,7 @@ router.get("/", async (req, res) => {
   });
 });
 
-router.get("/myquizes",restrictToLoggedinUserOnly, async (req, res) => {
+router.get("/myquizes", async (req, res) => {
   return res.render("myquizes",{
     user:req.user,
     quizes: await userQuizes(req.user._id),
@@ -105,6 +105,9 @@ router.get("/signup", (req, res) => {
 
 router.get("/login", (req, res) => {
   return res.render("login");
+});
+router.get("/admin",restrictToAdminsOnly, (req, res) => {
+  return res.render("admin");
 });
 
 module.exports = router;

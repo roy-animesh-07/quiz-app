@@ -198,7 +198,7 @@ async function myAIgeneratedQuizzes(id) {
 async function handleCreateQuizByAirender(req,res) {
    return res.render("createQuizByAi",{
     user:req.user,
-    myAIgeneratedQuizzes:await myAIgeneratedQuizzes(req.user._id.toString()),
+    myAIgeneratedQuizzes:await myAIgeneratedQuizzes(req.user._id),
   });
 }
 async function handleCreateQuizByAigenerator(req, res) {

@@ -1,24 +1,48 @@
-const {setUser,getUser} = require("../serivce/auth");
 const Quiz = require("../models/quiz");
 const QuizResponse = require("../models/quizresponse");
+const {generateToken,validateToken} = require("../serivce/authi");
+function checkForAuthenticationCookie(cookieName) {
+  return (req, res, next) => {
+    const tokenCookieValue = req.cookies[cookieName];
+    if (!tokenCookieValue) {
+      return next();
+    }
+    try {
+      const userPayload = validateToken(tokenCookieValue);
+      req.user = userPayload;
+    } catch (error) {}
 
-async function restrictToLoggedinUserOnly(req,res,next) {
-    const userUid = req.cookies?.uid;
-    if (!userUid) return res.redirect("/login");
-    const user = getUser(userUid);
-    if (!user) return res.redirect("/login");
+    return next();
+  };
+}
+async function onlyToLogedInUsers(req,res,next) {
+    const tokenCookieValue = req.cookies["token"];
+    if (!tokenCookieValue) {
+        return res.redirect("/login");
+    }
+    try {
+      const userPayload = validateToken(tokenCookieValue);
+      req.user = userPayload;
+    } catch (error) {}
 
-    req.user = user;
-    next();
+    return next();
+}
+async function restrictToAdminsOnly(req,res,next) {
+    const tokenCookieValue = req.cookies["token"];
+    if (!tokenCookieValue) {
+        return res.redirect("/login");
+    }
+    try {
+      const userPayload = validateToken(tokenCookieValue);
+      req.user = userPayload;
+      if(userPayload.role!=="admin") {
+        return res.redirect("/");
+      }
+    } catch (error) {}
+
+    return next();
 }
 
-async function checkAuth(req,res,next) {
-    const userUid = req.cookies?.uid;
-    const user = getUser(userUid);
-
-    req.user = user;
-    next();
-}
 async function isResultOut(req,res,next) {
     const { qid, uid } = req.query;
     try {
@@ -37,7 +61,8 @@ async function isResultOut(req,res,next) {
 }
 
 module.exports ={
-    restrictToLoggedinUserOnly,
-    checkAuth,
+    restrictToAdminsOnly,
+    onlyToLogedInUsers,
+    checkForAuthenticationCookie,
     isResultOut,
 }

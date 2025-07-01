@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
+require("dotenv").config();
 
 //my models
 const User = require("./models/user");
@@ -22,7 +23,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-const {restrictToLoggedinUserOnly,checkAuth} = require("./middlewares/auth");
+const {checkForAuthenticationCookie} = require("./middlewares/auth");
+app.use(checkForAuthenticationCookie("token"));
 
 //routes
 const staticRoute = require("./routes/staticRouter");
@@ -32,8 +34,8 @@ const quizRoute = require("./routes/quiz");
 
 
 app.use("/user",userRoute);
-app.use("/",checkAuth,staticRoute);
-app.use("/quiz",restrictToLoggedinUserOnly,quizRoute);
+app.use("/",staticRoute);
+app.use("/quiz",quizRoute);
 
 app.listen(PORT,() => {
     console.log(`server started at http://localhost:${PORT}`);
