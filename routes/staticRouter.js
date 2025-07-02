@@ -107,7 +107,19 @@ router.get("/login", (req, res) => {
   return res.render("login");
 });
 router.get("/admin",restrictToAdminsOnly, (req, res) => {
-  return res.render("admin");
+  return res.render("admin",{
+    user:req.user,
+  })
+});
+router.post("/admin/create",restrictToAdminsOnly, async (req, res) => {
+  try {
+        const newQuiz = new Quiz(req.body);
+        await newQuiz.save();
+        res.status(201).json({ message: "Quiz created", quizId: newQuiz._id });
+    } catch (error) {
+        console.error("Error saving quiz:", error);
+        res.status(500).json({ error: "Failed to save quiz" });
+    }
 });
 
 module.exports = router;

@@ -46,7 +46,7 @@ async function restrictToAdminsOnly(req,res,next) {
 async function isResultOut(req,res,next) {
     const { qid, uid } = req.query;
     try {
-        const quiz = await Quiz.findById(qid).populate("questions");
+        const quiz = await Quiz.findById(qid);
         if (!quiz) {
             return res.status(404).send("Quiz not found");
         }

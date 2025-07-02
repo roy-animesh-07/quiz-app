@@ -1,11 +1,282 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QUIZ_APP</title>
+    <%- include('./partials/head-boot.ejs') %>
 </head>
+
 <body>
-    <h1>HI from admins</h1>
+    <%- include('./partials/nav.ejs') %>
+        <h1>Create a Quiz</h1>
+        <form id="form" class="form d-flex flex-column mb-3">
+            <h3>GENERAL DETAILS</h3>
+            <label for="title">Title</label>
+            <input type="text" name="title">
+            <label for="description">Description</label>
+            <textarea name="description"></textarea>
+            <label for="startTime">startTime</label>
+            <input type="datetime-local" name="startTime">
+            <label for="endTime">endTime</label>
+            <input type="datetime-local" name="endTime">
+            <label for="duration">Duration(mins)</label>
+            <input type="text" name="duration">
+            <p>Result Declared?</p>
+            <label>
+                <input type="radio" name="resultOut" value="true">
+                true <br>
+            </label>
+            <label>
+                <input type="radio" name="resultOut" value="false">
+                false <br>
+            </label>
+            <p>For All</p>
+            <label>
+                <input type="radio" name="forAll" value="true">
+                true <br>
+            </label>
+            <label>
+                <input type="radio" name="forAll" value="false">
+                false <br>
+            </label>
+            <h3>QUESTIONS DETAILS</h3>
+            <div class="sections">
+                <div class="section card">
+                    <div class="sectionText"><label for="sectionText">Section Text</label>
+                        <input type="text" name="sectionText">
+                    </div>
+                    <div class="questions">
+                        <div class="question card m-3">
+                            <div class="questionText">
+                                <label for="questionText">Question Text</label>
+                                <input type="text" name="questionText">
+                            </div>
+                            <div class="options">
+                                <div class="option card m-3">
+                                    <div class="optionText">
+                                        <label for="optionText">Option Text</label>
+                                        <input type="text" name="optionText">
+                                    </div>
+                                    <label>
+                                        <input type="checkbox" name="iscorrect" value="true">
+                                        true <br>
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="iscorrect" value="false">
+                                        false <br>
+                                    </label>
+
+
+                                </div>
+                                <button type="button" class="addOption w-10 m-3">Add a option</button>
+                                <div class="marks">
+                                    <label for="positiveScore">Positive Score</label>
+                                    <input type="number" name="positiveScore">
+                                    <label for="negativeScore">Negative Score</label>
+                                    <input type="number" name="negativeScore">
+                                </div>
+
+                            </div>
+                        </div>
+                        <button type="button" class="addQuestion w-10 m-3">Add a question</button>
+                    </div>
+                </div>
+                <button type="button" class="addSection w-10">Add a section</button>
+            </div>
+            <input class="w-25 m-auto" type="submit">
+        </form>
+        <%- include('./partials/script-boot.ejs') %>
+            <script>
+                function addOptionEventListeners(ele) {
+                    ele.addEventListener("click", () => {
+                        let newoption = `<div class="option card m-3">
+                                    <div class="optionText">
+                                        <label for="optionText">Option Text</label>
+                                        <input type="text" name="optionText">
+                                    </div>
+                                    <label>
+                                        <input type="checkbox" name="iscorrect" value="true">
+                                        true <br>
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="iscorrect" value="false">
+                                        false <br>
+                                    </label>
+                                </div>`;
+                        const wrapper = document.createElement("div");
+                        wrapper.innerHTML = newoption;
+                        const newoptionhtml = wrapper.firstElementChild;
+                        ele.parentElement.insertBefore(newoptionhtml, ele);
+                    })
+                }
+                function addQuestionEventListeners(ele) {
+                    ele.addEventListener("click", () => {
+                        let newquestion = `<div class="question card m-3">
+                            <div class="questionText">
+                                <label for="questionText">Question Text</label>
+                                <input type="text" name="questionText">
+                            </div>
+                            <div class="options">
+                                <div class="option card m-3">
+                                    <div class="optionText">
+                                        <label for="optionText">Option Text</label>
+                                        <input type="text" name="optionText">
+                                    </div>
+                                    <label>
+                                        <input type="checkbox" name="iscorrect" value="true">
+                                        true <br>
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="iscorrect" value="false">
+                                        false <br>
+                                    </label>
+                                    
+
+                                </div>
+                                <button type="button" class="addOption w-10 m-3">Add a option</button>
+                                <div class="marks">
+                                        <label for="positiveScore">Positive Score</label>
+                                        <input type="number" name="positiveScore">
+                                        <label for="negativeScore">Negative Score</label>
+                                        <input type="number" name="negativeScore">
+                                    </div>
+
+                            </div>
+                        </div>`;
+                        const wrapper = document.createElement("div");
+                        wrapper.innerHTML = newquestion;
+                        const newquestionhtml = wrapper.firstElementChild;
+                        const addOptionBtn = newquestionhtml.querySelector(".addOption");
+                        addOptionEventListeners(addOptionBtn);
+                        ele.parentElement.insertBefore(newquestionhtml, ele);
+                    });
+                }
+                function addSectionEventListeners(ele) {
+                    ele.addEventListener("click", () => {
+                        let newsection = `<div class="section card">
+                    <div class="sectionText"><label for="sectionText">Section Text</label>
+                        <input type="text" name="sectionText">
+                    </div>
+                    <div class="questions">
+                        <div class="question card m-3">
+                            <div class="questionText">
+                                <label for="questionText">Question Text</label>
+                                <input type="text" name="questionText">
+                            </div>
+                            <div class="options">
+                                <div class="option card m-3">
+                                    <div class="optionText">
+                                        <label for="optionText">Option Text</label>
+                                        <input type="text" name="optionText">
+                                    </div>
+                                    <label>
+                                        <input type="checkbox" name="iscorrect" value="true">
+                                        true <br>
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="iscorrect" value="false">
+                                        false <br>
+                                    </label>
+                                    
+
+                                </div>
+                                <button type="button" class="addOption w-10 m-3">Add a option</button>
+                                <div class="marks">
+                                        <label for="positiveScore">Positive Score</label>
+                                        <input type="number" name="positiveScore">
+                                        <label for="negativeScore">Negative Score</label>
+                                        <input type="number" name="negativeScore">
+                                    </div>
+
+                            </div>
+                        </div>
+                        <button type="button" class="addQuestion w-10 m-3">Add a question</button>
+                    </div>
+                </div>`;
+                        const wrapper = document.createElement("div");
+                        wrapper.innerHTML = newsection;
+                        const newsectionhtml = wrapper.firstElementChild;
+                        const addQuestionBtn = newsectionhtml.querySelector(".addQuestion");
+                        addQuestionEventListeners(addQuestionBtn);
+
+                        const addOptionBtn = newsectionhtml.querySelector(".addOption");
+                        addOptionEventListeners(addOptionBtn);
+                        ele.parentElement.insertBefore(newsectionhtml, ele);
+                    });
+                }
+
+                addSectionEventListeners(document.querySelector(".addSection"));
+                addQuestionEventListeners(document.querySelector(".addQuestion"));
+                addOptionEventListeners(document.querySelector(".addOption"));
+
+                document.getElementById("form").addEventListener("submit", async (e) => {
+                    e.preventDefault();
+
+                    const form = e.target;
+
+                    const quiz = {
+                        title: form.title.value,
+                        description: form.description.value,
+                        startTime: new Date(form.startTime.value),
+                        endTime: new Date(form.endTime.value),
+                        duration: parseInt(form.duration.value),
+                        resultOut: form.resultOut.value === "true",
+                        forall: form.forAll.value === "true",
+                        createdBy: "<%= user._id %>", // Set this dynamically based on login
+                        sections: [],
+                    };
+
+                    const sectionElements = form.querySelectorAll(".section");
+
+                    sectionElements.forEach(section => {
+                        const sectionText = section.querySelector("input[name='sectionText']").value;
+
+                        const questions = [];
+                        section.querySelectorAll(".question").forEach(question => {
+                            const questionText = question.querySelector("input[name='questionText']").value;
+
+                            const options = [];
+                            question.querySelectorAll(".option").forEach(option => {
+                                const optionText = option.querySelector("input[name='optionText']").value;
+                                const isCorrect = option.querySelector("input[name='iscorrect']:checked")?.value === "true";
+
+                                options.push({ optionText, isCorrect });
+                            });
+                            const positiveScore = parseInt(question.querySelector("input[name='positiveScore']").value);
+                            const negativeScore = parseInt(question.querySelector("input[name='negativeScore']").value);
+
+
+                            questions.push({ questionText, options ,positiveScore,negativeScore});
+                        });
+
+                        quiz.sections.push({ sectionText, questions});
+                    });
+
+                    try {
+                        const response = await fetch("/admin/create", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(quiz)
+                        });
+
+                        const result = await response.json();
+                        if (response.ok) {
+                            alert("Quiz created successfully!");
+                        } else {
+                            console.error("Server error:", result);
+                            alert("Error creating quiz");
+                        }
+                    } catch (err) {
+                        console.error("Network error:", err);
+                        alert("Error sending request");
+                    }
+                });
+
+
+
+            </script>
 </body>
+
 </html>

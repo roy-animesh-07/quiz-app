@@ -30,10 +30,13 @@
             </h3>
             <h4>Description : <%=quiz.description%>
             </h4>
-            <p>Score: <%= userResponse.score%> out of <%= quiz.questions.length%>
+            <div class="score d-flex justify-content-center align-items-center border"><h3>SCORE <%= userResponse.score%></h3> </div>
             </p>
-
-            <% quiz.questions.forEach((question, index)=> { %>
+            <div>
+                <% let q=0 %>
+                <% quiz.sections.forEach((section,sindex) => { %>
+                <h2><%=section.sectionText%></h2>
+            <% section.questions.forEach((question, index)=> { %>
                 <div id="<%= question._id %>" class="question" data-index="<%= index %>">
                     <h3>
                         <%=index+1%> : <%= question.questionText %>
@@ -49,7 +52,7 @@
 
                     <p><strong>Your Response(s):</strong></p>
                     <ul>
-                        <% const selectedIds=userResponse.response[index].selectedOptions.map(id=> id.toString());
+                        <% const selectedIds=userResponse.response[q].selectedOptions.map(id=> id.toString());
                             question.options.forEach((option) => {
                             if (selectedIds.includes(option._id.toString())) {
                             %>
@@ -79,7 +82,11 @@
                             <%= verdict %>
                     </p>
                 </div>
+                <%q++;%>
                 <% }) %>
+                 <% }) %>
+
+                </div>
         </div>
         <%- include('partials/script-boot.ejs') %>
 </body>

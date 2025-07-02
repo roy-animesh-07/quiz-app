@@ -7,7 +7,7 @@ const Comment =require("../models/comment");
 
 async function startQuiz(req,res) {
     const quizId = req.params.id;
-    const quiz = await Quiz.findById(quizId).populate("questions");
+    const quiz = await Quiz.findById(quizId);
     if (!quiz) {
         return res.status(404).send("Quiz not found");
     }
@@ -30,7 +30,7 @@ async function submitQuiz(req, res) {
 
   // Create a map for quick lookup
   const questionMap = new Map();
-  quiz.questions.forEach((q) => questionMap.set(String(q._id), q));
+  quiz.sections.forEach((section)=> section.questions.forEach((q) => questionMap.set(String(q._id), q)));
 
   answers.forEach(({ question, selectedOptions }) => {
     const q = questionMap.get(String(question));
@@ -47,13 +47,18 @@ async function submitQuiz(req, res) {
       selectedIds.length === correctOptionIds.length &&
       selectedIds.every(id => correctOptionIds.includes(id));
 
-    if (isCorrect) score++;
+    if (isCorrect) {
+      score+= q.positiveScore;
+    }
+    else{
+      score+=q.negativeScore;
+    }
   });
 
   const quizResponse = new QuizResponse({
     quiz: quiz._id,
     user: req.user._id,
-    response: answers, // already in correct structure
+    response: answers, 
     score,
     submittedAt: new Date()
   });
@@ -62,8 +67,7 @@ async function submitQuiz(req, res) {
 
   res.status(200).json({
     message: "Quiz submitted successfully",
-    score,
-    total: quiz.questions.length
+    
   });
 }
 
@@ -90,7 +94,7 @@ async function getResult(req, res) {
     }
 
     try {
-        const quiz = await Quiz.findById(qid).populate("questions");
+        const quiz = await Quiz.findById(qid);
         if (!quiz) {
             return res.status(404).send("Quiz not found");
         }
@@ -104,14 +108,10 @@ async function getResult(req, res) {
             return res.status(404).send("User's response not found");
         }
 
-        const standings = await QuizResponse.find({ quiz: qid })
-            .sort({ score: -1 })
-            .populate("user", "name email");
 
         res.render("veiwResult", {
             user: req.user || null,
             quiz: quiz,
-            standings: standings,
             userResponse: userResponse
         });
 
@@ -206,26 +206,36 @@ async function handleCreateQuizByAigenerator(req, res) {
 
     const { title, description, duration } = req.body;
 
-    const prompt1 = `
-    Generate 5 multiple-choice quiz questions on the topic "${title}".
-    Here's a little description of the quiz - "${description}".
-    Each question must be an object in this JSON format:
+    const prompt1 = `Generate 5 multiple-choice quiz questions on the topic "${title}" (default to 5 if not specified).
+          Here's a brief description of the quiz: "${description}".
 
-    {
-      "questionText": "Your question here",
-      "options": [
-        { "optionText": "Option 1", "isCorrect": false },
-        { "optionText": "Option 2", "isCorrect": false },
-        { "optionText": "Correct Option", "isCorrect": true },
-        { "optionText": "Option 4", "isCorrect": false }
-      ]
-    }
+          Each question should follow this JSON structure:
 
-    Guidelines:
-    - Options should be realistic and related
-    - Avoid extra text or markdown
-    - Respond with a pure JSON array containing 5 such questions
-    `;
+          [
+            {
+              "sectionText": "Your section title here",
+              "questions": [
+                {
+                  "questionText": "Your question here",
+                  "options": [
+                    { "optionText": "Option 1", "isCorrect": false },
+                    { "optionText": "Option 2", "isCorrect": true },
+                    { "optionText": "Option 3", "isCorrect": false },
+                    { "optionText": "Option 4", "isCorrect": true }
+                  ],
+                  "positiveScore": <positive number like 1, 2, 3, or 4>,
+                  "negativeScore": <negative number like -1, -2, etc.>
+                }
+              ]
+            }
+          ]
+
+          Guidelines:
+          - Options must be realistic and related to the question.
+          - Multiple correct options are allowed (set ""isCorrect": true" accordingly).
+          - Avoid any explanations, markdown, or extra text.
+          - Respond with a **pure JSON array** matching the above structure.
+          `;
     const prompt2 = `
     Generate a public description of a quiz of title :  "${title}".
     Here's a little description of the quiz - "${description}".
@@ -235,13 +245,15 @@ async function handleCreateQuizByAigenerator(req, res) {
 
     const aiText = await generateQuizQuestions(prompt1);
     const quizdes = await generateQuizQuestions(prompt2);
-    let questions = JSON.parse(aiText);
+    
+    const cleanedText = aiText.trim().replace(/^```(json)?|```$/g, "");
+    let sections = JSON.parse(cleanedText);
 
 
     const newQuiz = new Quiz({
       title,
       description:quizdes,
-      questions,
+      sections,
       duration,
       createdBy: req.user._id,
       forall:false,

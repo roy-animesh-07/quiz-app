@@ -23,54 +23,72 @@ const quizesSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    questions: [
+    sections: [
         {
-            questionText: {
+            sectionText: {
                 type: String,
                 required: true,
             },
-            options: [
+            questions: [
                 {
-                    optionText: {
+                    questionText: {
                         type: String,
                         required: true,
                     },
-                    isCorrect: {
-                        type: Boolean,
-                        default: false,
+                    options: [
+                        {
+                            optionText: {
+                                type: String,
+                                required: true,
+                            },
+                            isCorrect: {
+                                type: Boolean,
+                                default: false,
+                            },
+                        },
+                    ],
+                    positiveScore:{
+                        type:Number,
+                        required:true,
                     },
+                    negativeScore:{
+                        type:Number,
+                        required:true,
+                    },
+
                 },
             ],
-        },
+        }
     ],
+
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
     },
     resultOut: {
-        type : Boolean,
-        default :false,
+        type: Boolean,
+        default: false,
     },
     upvote: {
-        type : Number,
-        default:0,
+        type: Number,
+        default: 0,
     },
     downvote: {
-        type:Number,
-        default:0,
+        type: Number,
+        default: 0,
     },
-    upvotedBy :[
+    upvotedBy: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
         }
     ],
-    forall :{
+    forall: {
         type: Boolean,
         default: false,
     },
-    downvotedBy :[
+    downvotedBy: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
